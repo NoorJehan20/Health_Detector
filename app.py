@@ -6,7 +6,7 @@ model = joblib.load('best_model.pkl')
 st.set_page_config(page_title="Health Risk Detector", page_icon="💡", layout="centered") 
 st.title("💡 AI-Powered Health Risk Detector") 
 st.write("Use this tool to assess the risk of heart disease based on patient data.") 
-# --- Sidebar Inputs --- 
+# Sidebar Inputs 
 st.sidebar.header("Patient Information") 
 age = st.sidebar.slider("Age", 20, 100, 50) 
 sex = st.sidebar.selectbox("Sex", ["Male", "Female"]) 
@@ -30,7 +30,7 @@ rest_ecg_map = { "Normal": 0, "ST-T Abnormality": 1, "Left Ventricular Hypertrop
 slope_map = { "Upsloping": 0, "Flat": 1, "Downsloping": 2 } 
 thal_map = { "Normal": 1, "Fixed Defect": 2, "Reversible Defect": 3 } 
 features = np.array([[age, sex, chest_pain_map[chest_pain_type], resting_bp, cholesterol, fasting_blood_sugar, rest_ecg_map[rest_ecg], thalach, exang, oldpeak, slope_map[slope], ca, thal_map[thal]]]) 
-# --- Prediction ---
+# Prediction 
 if st.button("🩺 Predict Risk"):
     prediction = model.predict(features)[0]
     proba = model.predict_proba(features)[0][1] if hasattr(model, "predict_proba") else None
@@ -43,9 +43,9 @@ if st.button("🩺 Predict Risk"):
         st.info("Maintain a healthy lifestyle to prevent future risk.")
 
     if proba is not None:
-        st.progress(proba)  # Interactive Probability Bar
+        st.progress(proba)  
         st.write(f"🧠 **Prediction Confidence:** `{proba:.2%}`")
 
-    # Optional: Save result
+    # Save result
     if st.download_button("📄 Download Report", f"Risk: {'High' if prediction==1 else 'Low'}\nConfidence: {proba:.2%}", file_name="health_risk_report.txt"):
         st.success("Report download started.")
